@@ -1,0 +1,45 @@
+library(gglot2)
+
+NextBike <- read.csv("E:\\Urban Transport MSc\\Social Science Statistics 1\\Final Assignment\\NextBike\\NextBike_Master_File.csv", 
+                     header=TRUE, sep=",", na.strings="NA", dec=",", strip.white=TRUE)
+
+#change from character to numeric in NextBike$Dur.min. as.numeric returns high values 
+fix(NextBike)
+
+#select data 
+duration <- subset(NextBike, select = c(Dur.min.))
+#remove na's 
+duration <- na.omit(duration)
+#returns 219598 or 99.1% of data 
+nrow(duration)/nrow(NextBike)
+#[1] 0.9917355
+
+
+#now select at hires lasting no more that 24  hours 
+day_duration <- subset(duration, Dur.min. < 1440, select = c(Dur.min.))
+#what percent of hires lasted less than a day? 98.6%
+nrow(day_duration)/nrow(NextBike)
+#[1] 0.9863116
+
+#now select all hires lasting no more than 12 hours
+twelvehour_duration <- subset(duration, Dur.min. < 720, select = c(Dur.min.))
+#what percent of hires lasted less than a 12 hours? 97.2
+nrow(twelvehour_duration)/nrow(NextBike)
+#[1] 0.9724109
+
+#now select all hires lasting no more than 6 hours
+sixhour_duration <- subset(duration, Dur.min. <= 360, select = c(Dur.min.))
+#what percent of hires lasted less than a 6 hours? 96.2
+nrow(sixhour_duration)/nrow(NextBike)
+#[1] 0.9615089
+
+##HISTOGRAM 
+duration_hist <- ggplot(sixhour_duration, aes(Dur.min.)) + 
+  geom_histogram(binwidth = 10, fill = "orange", colour = "black")+
+  labs(title = "Bike Hire Trip Duration Distribution for Trips Between 0-6 Hours", y = "Number of Bike Hires", x = "Duration (mins)") +
+  theme(panel.background = element_rect(fill = "aliceblue"),
+        panel.grid.minor = element_line(linetype = "dotted"),
+        panel.grid.major = element_line(colour = "grey84"),
+        legend.position = "none") 
+		
+print(duration_hist)
