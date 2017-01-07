@@ -1,0 +1,10 @@
+NextBike <- read.csv("E:\\Urban Transport MSc\\Social Science Statistics 1\\Final Assignment\\NextBike\\NextBike_Master_File.csv", 
+                     header=TRUE, sep=",", na.strings="NA", dec=",", strip.white=TRUE)
+
+Events <- subset(NextBike, select = c(Events))
+Events <- table(Events)
+Events <- as.data.frame(Events)
+Events$rel.per <- Events$Freq/sum(Events$Freq)
+Events$cum.percent <- cumsum(Events$rel.per)
+
+write.csv(Events, file = "E:\\Urban Transport MSc\\Social Science Statistics 1\\Final Assignment\\NextBike\\SSS1 Output R\\freq_table.csv")
