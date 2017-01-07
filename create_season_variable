@@ -1,0 +1,12 @@
+SSS1 <- read.csv("E:\\Urban Transport MSc\\Social Science Statistics 1\\Final Assignment\\NextBike\\SSS1 Output R\\SSS1_Data_Final.csv",
+                 header=TRUE, sep=",", na.strings="NA", dec=",", strip.white=TRUE)
+
+setwd("E:\\Urban Transport MSc\\Social Science Statistics 1\\Final Assignment\\NextBike\\SSS1 Output R")
+
+#select and reformat time
+SSS1$day <- strptime(SSS1$day, '%Y-%m-%d') 
+SSS1$day <- as.Date(strptime(SSS1$day, '%Y-%m-%d')) 
+
+SSS1$season.factor <-cut(SSS1$day, breaks = as.Date(c("2014-06-21", "2014-09-23", "2014-12-21", "2015-03-20",
+                                                      "2015-06-21", "2015-09-23", "2015-12-22", "2016-03-20", "2016-06-20", "2016-09-22")), labels = c("1", "2", 
+                                                                                                                                                       "3", "4", "5", "6", "7", "8", "9"))
