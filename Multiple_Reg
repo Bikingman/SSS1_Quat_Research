@@ -1,0 +1,46 @@
+SSS1 <- read.csv("E:\\Urban Transport MSc\\Social Science Statistics 1\\Final Assignment\\NextBike\\SSS1 Output R\\SSS1_Data_Final.csv",
+header=TRUE, sep=",", na.strings="NA", dec=",", strip.white=TRUE)
+
+SSS1$Event.Code <- factor(SSS1$Events, labels = c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"))
+
+SSS1$Rain_Dummy <- SSS1$Event.Code
+SSS1$Rain_Dummy <- as.numeric(SSS1$Rain_Dummy)
+SSS1$Rain_Dummy[SSS1$Rain_Dummy == "1"] <- "0"
+SSS1$Rain_Dummy[SSS1$Rain_Dummy == "2"] <- "0"
+SSS1$Rain_Dummy[SSS1$Rain_Dummy == "3"] <- "0"
+SSS1$Rain_Dummy[SSS1$Rain_Dummy == "4"] <- "0"
+SSS1$Rain_Dummy[SSS1$Rain_Dummy == "5"] <- "0"
+SSS1$Rain_Dummy[SSS1$Rain_Dummy == "6"] <- "0"
+SSS1$Rain_Dummy[SSS1$Rain_Dummy == "7"] <- "1"
+SSS1$Rain_Dummy[SSS1$Rain_Dummy == "8"] <- "0"
+SSS1$Rain_Dummy[SSS1$Rain_Dummy == "9"] <- "0"
+SSS1$Rain_Dummy[SSS1$Rain_Dummy == "10"] <- "0"
+SSS1$Rain_Dummy[SSS1$Rain_Dummy == "11"] <- "0"
+SSS1$Rain_Dummy[SSS1$Rain_Dummy == "12"] <- "0"
+
+a <- lm(formula = Freq ~ Dew_PointC + Max_Gust_SpeedKm_h + Max_Humidity + 
+    Max_TemperatureC + 
+    Max_Wind_SpeedKm_h + Mean_Humidity + 
+    Mean_TemperatureC + Mean_VisibilityKm + Mean_Wind_SpeedKm_h + 
+    MeanDew_PointC + Min_DewpointC + Min_Humidity + 
+    Min_TemperatureC + Min_VisibilitykM + Events, data = SSS1, x = TRUE)
+	
+summary(a)
+
+table <- summary(a)
+table <- xtable(table)
+write.csv(table, file = "E:\\Urban Transport MSc\\Social Science Statistics 1\\Final Assignment\\NextBike\\First_OLS_FILE.csv")
+
+print(table)
+
+#post hoc qqnormal plot
+
+a2= rstandard(a)
+qqplot <- qqnorm(a2, ylab="Standardized Residuals", xlab="Normal Scores", main="Weather and Bike Hire Counts") + grid() 
+qqline(a2)
+
+#post hoc plot residuals to tets normal distribution 
+
+a2= rstandard(a)
+plot(a2, ylab="Standardized Residuals", xlab="Bike Hire Counts", main="Plot of Standardized Residuals", col = "Dark Green") 
+abline(0, 0)
