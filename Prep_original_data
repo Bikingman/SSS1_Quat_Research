@@ -1,0 +1,90 @@
+NextBike <- read.csv("C:/Users/Daniel I. Patterson/Documents/NextBike/NextBike_MOD.csv", 
+header=TRUE, sep=",", na.strings="NA", dec=",", strip.white=TRUE)
+
+#fixing S.E.C.C station number 
+NextBike$Departure.Station.Number[NextBike$Rental.Place == "S.E.C.C"] <- 8415
+
+#Add start day vector column (vc)
+NextBike$Start.Day <- weekdays(as.Date(NextBike$Start.Date))
+#Add end day vc 
+NextBike$End.Day <- weekdays(as.Date(NextBike$End.Date))
+
+#add start day code vc 
+NextBike$Start.Day.Code <- as.POSIXlt(NextBike$Start.Date, "%Y-%m-%d", tz = "GMT")$wday
+#add end day code 
+NextBike$End.Day.Code <- as.POSIXlt(NextBike$End.Date, "%Y-%m-%d", tz = "GMT")$wday
+
+#add start month 
+NextBike$Start.Month <- months(as.Date(NextBike$Start.Date))
+# add end month 
+NextBike$End.Month <- months(as.Date(NextBike$End.Date))
+
+#add hour
+NextBike$hour<-cut(NextBike$Start.Time,breaks="hour")
+
+## Get 2014, 2015,2016 weather data for GLA
+
+weather2014 <- getWeatherForDate("GLA", start_date = "2014-01-01", end_date="2014-12-31", opt_all_columns = TRUE)
+weather2015 <- getWeatherForDate("GLA", start_date = "2015-01-01", end_date="2015-12-31", opt_all_columns = TRUE)
+weather2016 <- getWeatherForDate("GLA", start_date = "2016-01-01", end_date="2016-08-30", opt_all_columns = TRUE)
+
+weather1 <- merge(weather2014, weather2015)
+weather2 <- merge(weather1, weather2016)
+
+weather1 <- mergerows(weather2014, weather1415, common.only=FALSE)
+weather1416 <- mergeRows(weather1, weather2016, common.only=FALSE)
+
+#to clean up a little in Excel 
+
+write.csv(weather1416, file = "C:/Users/Daniel I. Patterson/Documents/Data/weather1416.csv")
+
+weather1416 <- read.csv("C:/Users/Daniel I. Patterson/Documents/NextBike/Weather1416.csv", 
+header=TRUE, sep=",", na.strings="NA", dec=",", strip.white=TRUE)
+
+##merge weather with NextBike data
+NextBike <- merge(NextBike, weather1416, by = "End.Date")
+
+
+
+#chop up by hour
+test <- subset(NextBike, select = c(Start.Timestamp))
+test2 <- format(lubridate::dmy_hms(test$Start.Timestamp, truncated = 1),"%d.%m.%Y %H:%M")
+test2 <- strptime(test2, format = "%d.%m.%Y %H:%M", tz = "GMT")
+test2 <-format(round(test2, units = "hours"), format = "%Y-%m-%d %H:%M") 
+test3 <- test2 
+test2 <- strptime(test2, format = "%Y-%m-%d %H:%M", tz = "GMT")
+#here's where tricky 
+test4 <- cut(test2, breaks = "hours")
+test5 <- table(test4)
+test6<-as.data.frame(test5)
+test7 <- strptime(test6$test4, format = "%Y-%m-%d %H:%M%S", tz = "GMT")
+
+#plot number of hires per hour with mean condition on number of hires per hour
+test8 <- ggplot(test6, aes(as.Date(test4, format = "%Y-%m-%d %H:%M:%S"), Freq))
+test8 + geom_point() +geom_smooth( se = FALSE) +
+	labs( x = "Date", y = "Number of Bike Hires", title = "Glasgow MACH Scheme Growth by Number of Bike Hires per Hour") 
+	
+#adding hour of day code 
+test6$hour.code <- hour(test6$test4)
+#add day of week code 
+ test6$Start_Day_Code <- as.POSIXlt(test6$test4)$wday
+ 
+	
+#same overall function but using day as cut interval
+day <- cut(test2, breaks = "days")
+day1 <- table(day)
+day2<-as.data.frame(day1)
+day3 <- ggplot(day2, aes(as.Date(day, format = "%Y-%m-%d"), Freq))
+day3 + geom_point() + 
+	geom_smooth(se = FALSE) + 
+	labs( x = "Date", y = "Number of Bike Hires", title = "Glasgow MACH Scheme Growth by Number of Bike Hires per Day") 
+
+	day3 + geom_point() + 
+	geom_smooth(method = "lm") + 
+	labs( x = "Date", y = "Number of Bike Hires", title = "Glasgow MACH Scheme Growth by Number of Bike Hires per Day") 
+
+
+
+write.csv(test5, file = "C:/Users/Daniel I. Patterson/Documents/NextBike/test.csv")
+test5 <- read.csv("C:/Users/Daniel I. Patterson/Documents/NextBike/test1.csv", 
+header=TRUE, sep=",", na.strings="NA", dec=",", strip.white=TRUE)
