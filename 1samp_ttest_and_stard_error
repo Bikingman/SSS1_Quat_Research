@@ -1,0 +1,22 @@
+NextBike <- read.csv("E:\\Urban Transport MSc\\Social Science Statistics 1\\Final Assignment\\NextBike\\NextBike_Master_File.csv", 
+                     header=TRUE, sep=",", na.strings="NA", dec=",", strip.white=TRUE)
+
+duration <- subset(NextBike, select = c(Dur.min.))
+#change factor to numeric
+fix(duration)
+duration <- na.omit(duration)
+day_duration <- subset(duration, Dur.min. <= 1440, select = c(Dur.min.))
+twelvehour_duration <- subset(duration, Dur.min. <= 720, select = c(Dur.min.))
+sixhour_duration <- subset(duration, Dur.min. <= 360, select = c(Dur.min.))
+
+t.test(as.numeric(day_duration$Dur.min.), y = NULL, alternative = "two.sided", mu = 16.2, paired = FALSE, var.equal = FALSE, conf.level = 0.95)
+t.test(as.numeric(twelvehour_duration$Dur.min.), y = NULL, alternative = "two.sided", mu = 16.2, paired = FALSE, var.equal = FALSE, conf.level = 0.95)
+t.test(as.numeric(sixhour_duration$Dur.min.), y = NULL, alternative = "two.sided", mu = 16.2, paired = FALSE, var.equal = FALSE, conf.level = 0.95)
+
+nrow(day_duration)/nrow(NextBike)
+nrow(twelvehour_duration)/nrow(NextBike)
+nrow(sixhour_duration)/nrow(NextBike)
+
+sd(day_duration)
+sd(twelvehour_duration)
+sd(sixhour_duration)
