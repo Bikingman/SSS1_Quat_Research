@@ -1,0 +1,341 @@
+###############################################
+#running a (very-not-so-much) robust pearson's r correlation test 
+#using this  
+
+SSS1 <- read.csv("E:\\Urban Transport MSc\\Social Science Statistics 1\\Final Assignment\\NextBike\\SSS1 Output R\\SSS1_Data_Final.csv",
+header=TRUE, sep=",", na.strings="NA", dec=",", strip.white=TRUE)
+
+
+with(SSS1, cor.test(Freq, Dew_PointC, alternative="two.sided", 
+  method="pearson"))
+with(SSS1, cor.test(Freq, Max_Gust_SpeedKm_h alternative="two.sided", 
+  method="pearson"))
+with(SSS1, cor.test(Freq, Max_Humidity, alternative="two.sided", 
+  method="pearson"))  
+with(SSS1, cor.test(Freq, Max_Sea_Level_PressurehPa, alternative="two.sided", 
+  method="pearson"))  
+with(SSS1, cor.test(Freq, Max_TemperatureC, alternative="two.sided", 
+  method="pearson")) 
+with(SSS1, cor.test(Freq, Max_VisibilityKm, alternative="two.sided", 
+  method="pearson"))  
+with(SSS1, cor.test(Freq,Max_Wind_SpeedKm_h, alternative="two.sided", 
+  method="pearson"))  
+with(SSS1, cor.test(Freq, Mean_Humidity, alternative="two.sided", 
+  method="pearson"))  
+with(SSS1, cor.test(Freq, Mean_Sea_Level_PressurehPa, alternative="two.sided", 
+  method="pearson"))  
+with(SSS1, cor.test(Freq, Mean_TemperatureC, alternative="two.sided", 
+  method="pearson"))  
+with(SSS1, cor.test(Freq, Mean_VisibilityKm, alternative="two.sided", 
+  method="pearson"))  
+with(SSS1, cor.test(Freq, Mean_Wind_SpeedKm_h, alternative="two.sided", 
+  method="pearson"))  
+with(SSS1, cor.test(Freq, MeanDew_PointC, alternative="two.sided", 
+  method="pearson"))  
+with(SSS1, cor.test(Freq, Min_DewpointC, alternative="two.sided", 
+  method="pearson"))  
+with(SSS1, cor.test(Freq, Min_Humidity, alternative="two.sided", 
+  method="pearson"))  
+with(SSS1, cor.test(Freq, Min_Sea_Level_PressurehPa, alternative="two.sided", 
+  method="pearson"))  
+with(SSS1, cor.test(Freq, Min_TemperatureC, alternative="two.sided", 
+  method="pearson"))  
+with(SSS1, cor.test(Freq, Min_VisibilitykM, alternative="two.sided", 
+  method="pearson"))  
+with(SSS1, cor.test(Freq, WindDirDegrees, alternative="two.sided", 
+  method="pearson")) 
+
+"""
+> with(SSS1, cor.test(Freq, Dew_PointC, alternative="two.sided", 
++   method="pearson"))
+
+	Pearson's product-moment correlation
+
+data:  Freq and Dew_PointC
+t = 12.114, df = 771, p-value < 2.2e-16
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.3389051 0.4574799
+sample estimates:
+      cor 
+0.3998642 
+
+> with(SSS1, cor.test(Freq, Max_Gust_SpeedKm_h alternative="two.sided", 
+Error: unexpected symbol in "with(SSS1, cor.test(Freq, Max_Gust_SpeedKm_h alternative"
+>   method="pearson"))
+Error: unexpected ')' in "  method="pearson")"
+> with(SSS1, cor.test(Freq, Max_Humidity, alternative="two.sided", 
++   method="pearson"))  
+
+	Pearson's product-moment correlation
+
+data:  Freq and Max_Humidity
+t = -1.283, df = 771, p-value = 0.1999
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.11629287  0.02443811
+sample estimates:
+       cor 
+-0.0461564 
+
+> with(SSS1, cor.test(Freq, Max_Sea_Level_PressurehPa, alternative="two.sided", 
++   method="pearson"))  
+
+	Pearson's product-moment correlation
+
+data:  Freq and Max_Sea_Level_PressurehPa
+t = 6.9795, df = 771, p-value = 6.392e-12
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.1762919 0.3089801
+sample estimates:
+      cor 
+0.2437765 
+
+> with(SSS1, cor.test(Freq, Max_TemperatureC, alternative="two.sided", 
++   method="pearson")) 
+
+	Pearson's product-moment correlation
+
+data:  Freq and Max_TemperatureC
+t = 24.207, df = 771, p-value < 2.2e-16
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.6151268 0.6954282
+sample estimates:
+     cor 
+0.657138 
+
+> with(SSS1, cor.test(Freq, Max_VisibilityKm, alternative="two.sided", 
++   method="pearson"))  
+
+	Pearson's product-moment correlation
+
+data:  Freq and Max_VisibilityKm
+t = 0.23157, df = 771, p-value = 0.8169
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.06221188  0.07880831
+sample estimates:
+        cor 
+0.008339679 
+
+> with(SSS1, cor.test(Freq,Max_Wind_SpeedKm_h, alternative="two.sided", 
++   method="pearson"))  
+
+	Pearson's product-moment correlation
+
+data:  Freq and Max_Wind_SpeedKm_h
+t = -10.325, df = 771, p-value < 2.2e-16
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.4089893 -0.2850154
+sample estimates:
+       cor 
+-0.3485258 
+
+> with(SSS1, cor.test(Freq, Mean_Humidity, alternative="two.sided", 
++   method="pearson"))  
+
+	Pearson's product-moment correlation
+
+data:  Freq and Mean_Humidity
+t = -13.487, df = 771, p-value < 2.2e-16
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.4922545 -0.3780368
+sample estimates:
+       cor 
+-0.4369051 
+
+> with(SSS1, cor.test(Freq, Mean_Sea_Level_PressurehPa, alternative="two.sided", 
++   method="pearson"))  
+
+	Pearson's product-moment correlation
+
+data:  Freq and Mean_Sea_Level_PressurehPa
+t = 8.984, df = 771, p-value < 2.2e-16
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.2425903 0.3703157
+sample estimates:
+      cor 
+0.3078393 
+
+> with(SSS1, cor.test(Freq, Mean_TemperatureC, alternative="two.sided", 
++   method="pearson"))  
+
+	Pearson's product-moment correlation
+
+data:  Freq and Mean_TemperatureC
+t = 18.793, df = 771, p-value < 2.2e-16
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.5101510 0.6070259
+sample estimates:
+      cor 
+0.5605029 
+
+> with(SSS1, cor.test(Freq, Mean_VisibilityKm, alternative="two.sided", 
++   method="pearson"))  
+
+	Pearson's product-moment correlation
+
+data:  Freq and Mean_VisibilityKm
+t = 2.8043, df = 771, p-value = 0.00517
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.03018088 0.16979391
+sample estimates:
+     cor 
+0.100482 
+
+> with(SSS1, cor.test(Freq, Mean_Wind_SpeedKm_h, alternative="two.sided", 
++   method="pearson"))  
+
+	Pearson's product-moment correlation
+
+data:  Freq and Mean_Wind_SpeedKm_h
+t = -10.498, df = 771, p-value < 2.2e-16
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.4138527 -0.2903852
+sample estimates:
+       cor 
+-0.3536585 
+
+> with(SSS1, cor.test(Freq, MeanDew_PointC, alternative="two.sided", 
++   method="pearson"))  
+
+	Pearson's product-moment correlation
+
+data:  Freq and MeanDew_PointC
+t = 12.799, df = 771, p-value < 2.2e-16
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.3586902 0.4751074
+sample estimates:
+     cor 
+0.418617 
+
+> with(SSS1, cor.test(Freq, Min_DewpointC, alternative="two.sided", 
++   method="pearson"))  
+
+	Pearson's product-moment correlation
+
+data:  Freq and Min_DewpointC
+t = 11.674, df = 771, p-value < 2.2e-16
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.3259581 0.4458940
+sample estimates:
+      cor 
+0.3875649 
+
+> with(SSS1, cor.test(Freq, Min_Humidity, alternative="two.sided", 
++   method="pearson"))  
+
+	Pearson's product-moment correlation
+
+data:  Freq and Min_Humidity
+t = -16.138, df = 771, p-value < 2.2e-16
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.5533878 -0.4478335
+sample estimates:
+       cor 
+-0.5024806 
+
+> with(SSS1, cor.test(Freq, Min_Sea_Level_PressurehPa, alternative="two.sided", 
++   method="pearson"))  
+
+	Pearson's product-moment correlation
+
+data:  Freq and Min_Sea_Level_PressurehPa
+t = 10.824, df = 771, p-value < 2.2e-16
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.3003615 0.4228696
+sample estimates:
+      cor 
+0.3631843 
+
+> with(SSS1, cor.test(Freq, Min_TemperatureC, alternative="two.sided", 
++   method="pearson"))  
+
+	Pearson's product-moment correlation
+
+data:  Freq and Min_TemperatureC
+t = 11.495, df = 771, p-value < 2.2e-16
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.3206195 0.4411049
+sample estimates:
+     cor 
+0.382487 
+
+> with(SSS1, cor.test(Freq, Min_VisibilitykM, alternative="two.sided", 
++   method="pearson"))  
+
+	Pearson's product-moment correlation
+
+data:  Freq and Min_VisibilitykM
+t = 5.3694, df = 771, p-value = 1.046e-07
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.1209631 0.2569338
+sample estimates:
+      cor 
+0.1898586 
+
+> with(SSS1, cor.test(Freq, WindDirDegrees, alternative="two.sided", 
++   method="pearson")) 
+
+	Pearson's product-moment correlation
+
+data:  Freq and WindDirDegrees
+t = -1.8892, df = 771, p-value = 0.05924
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.137736385  0.002646942
+sample estimates:
+       cor 
+-0.0678807 
+"""
+  
+  
+  #what we know about this data
+To continue with the hypthsis that weather has an impact on the number of bikes hired, this section looks
+considers the covariance between tempurature and bikes hired by calcualting Pearson's Product Moement Correlation Coefficient.
+This builds off the scatter plot chart, from which a visual interpretation suggests positive coraviabnce between the two variebls. 
+ 
+Pearson's product moment corrleation, aslso known as Pearson's R, will measure the magnitude of relatsiohip between 
+two variables. This statistics is represented by the letter r. R is standarized value of covraince between two variables 
+that will be between -1 and 1. In this case, -1 equals a perfect negative relationships, 0 equals no relatiosnhips, 
+and 1 equals a perfect positive relatsiohsip.
+
+A perfect negative relatsiohsip is represented by a function whereby two variables 
+change at equal proportions in opposite directiosn. That is to say that as one unit of the independent variable increases
+the dependent varable decreases by one unit always; a positive relatiohsip is the inverse function. A r value of 
+0 between two variales represernts a relatiship where there a change in one variable does not influence the 
+other in any particular patterns. Under this function, the closer the value of pearson's r is to -1 or 1, 
+the stronger the covariance is between the two variables. 
+
+In addition to the measuring the magnitude of covariables, the significance of the pearson's R can be measured. This profices a 
+level of confidence to assurt a propostion of reltionship between the two variables measured. 
+
+
+As we can see there is a significant 
+relationship between the temperature and the number of bike hires. In Pearson's product-moment correlation test between number of bike 
+hires per day and mean tempurature per day, r = .56. In this can we can reject the null hyptoshsi as the r does not equal 0. 
+  
+
+data:  Freq and Mean_TemperatureC
+t = 18.793, df = 771, p-value < 2.2e-16
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.5101510 0.6070259
+sample estimates:
+      cor 
+0.5605029 
+"""
