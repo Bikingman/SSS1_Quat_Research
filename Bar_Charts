@@ -1,0 +1,129 @@
+library(ggplot2)
+library(plyr)
+
+NextBike <- read.csv("E:\\Urban Transport MSc\\Social Science Statistics 1\\Final Assignment\\NextBike\\NextBike_Master_File.csv", 
+                     header=TRUE, sep=",", na.strings="NA", dec=",", strip.white=TRUE)
+
+NextBike$Start.Date <- strptime(NextBike$Start.Date, '%d/%m/%Y') 
+NextBike$Start.Date <- as.POSIXlt(strptime(NextBike$Start.Date, '%Y-%m-%d')) 
+
+YearOneNextB <- subset(NextBike, Start.Date >= as.POSIXct('2014-06-23') & Start.Date <= as.POSIXct('2015-06-22'))
+YearTwoNextB <- subset(NextBike, Start.Date >= as.POSIXct('2015-06-23') & Start.Date <= as.POSIXct('2016-06-22'))
+
+YearOneBarData <- count(YearOneNextB$Departure.Station.Number)
+YearTwoBarData <- count(YearTwoNextB$Departure.Station.Number)
+
+###yearone 
+
+Bar  <- ggplot(YearOneBarData, aes(factor(x), freq)) 
+Bar + 
+  geom_bar(stat = "identity", colour="Black", fill="gold", alpha=.9) + 
+  coord_flip() + 
+  scale_x_discrete("Station", 
+                   limits = c("8449", "8440", "8445", "8443", "8446", "8441", "8444", "8442", "8448", "8439", "8428", "8424", "8409", "8433", "8432", 
+                              "8430", "8416", "8438", "8426", "8411", "8405", "8407", "8447", "8421", "8420", "8406", "8431", "8408", "8435", "8404", 
+                              "8418", "8402", "8425", "8401", "8415", "8422", "8417", "8423", "8410", "8413", "8412"), 
+                   labels = c("8449"=    "Gartnavel General Hospital",
+                              "8440"=	"Barrowlands",
+                              "8445"=	"Govan Cross",	
+                              "8450"=    "Elizabeth University Hospital", 
+                              "8443"=	"Paisley Road Toll",
+                              "8446"=    "Eglinton Toll", 
+                              "8441"=	"Bridgeton Cross",
+                              "8444"=	"Cessnock Subway Station",
+                              "8442"=    "City of Glasgow Collage (Riverside Campus)",
+                              "8448"=	"Queens Park West",
+                              "8439"=    "Bellgrove Railway Station (North)", 
+                              "8428"=	"Emirates Arena",
+                              "8424"=	"University of Strathclyde (North)",
+                              "8409"=	"Glasgow Cathedral",
+                              "8433"=	"University of Strathclyde (South)",
+                              "8432"=	"Bridge Street Subway",
+                              "8430"=	"Gallery of Modern Art",
+                              "8416"=	"Riverside Museum",
+                              "8438"=	"Finnieston Street",
+                              "8426"=    "Glasgow Science Centre", 
+                              "8411"=	"Argyle Street Railway Station",
+                              "8405"=	"Glasgow Caledonian University",
+                              "8407"=	"Merchant Square",
+                              "8447"=    "Queens Park Railway Station", 
+                              "8421"=	"Charing Cross Railway Station",
+                              "8420"=    "Kelvingrove Art Gallery", 
+                              "8406"=	"George Square", 	
+                              "8431"=	"Trongate",
+                              "8408"=	"St George's Cross",
+                              "8435"=	"University of Glasgow (East)",
+                              "8404"=	"Buchanan Street Bus Station",
+                              "8418"=    "Kelvinbridge Subway",
+                              "8402"=    "Waterloo Street",
+                              "8425"=	"Mitchell Library",	
+                              "8401"=    "Glasgow Central Station", 
+                              "8415"=    "S.E.C.C",
+                              "8422"=    "University of Glasgow (West)", 	
+                              "8417"=    "Botanic Gardens", 
+                              "8423"=    "Partick Interchange", 
+                              "8410"=    "St Enoch Square", 
+                              "8413"=    "Broomielaw", 
+                              "8412"=    "Glasgow Green"
+                   ))+
+  theme_bw() + 
+  labs(x="Station", y="Number of Departures", title = c("Departures by Station, First Year")) 
+
+###yearTwo
+
+##################### need to reorganize use the assoaiced excel sheet  
+Bar_Y2  <- ggplot(YearTwoBarData, aes(factor(x), freq)) 
+Bar_Y2 + 
+  geom_bar(stat = "identity", fill = "gold", colour = "black") + 
+  coord_flip() + 
+  scale_x_discrete("Station", 
+                   limits = c("8450", "8449", "8403", "8445", "8440", "8409", "8428", "8424", "8432", "8416", "8430", "8443", "8405", "8421", "8446", "8435", 
+                              "8407", "8444", "8438", "8425", "8408", "8402", "8418", "8411", "8404", "8441", "8415", "8431", "8433", "8442", "8406", "8422", 
+                              "8420", "8417", "8426", "8448", "8401", "8423", "8439", "8447", "8413", "8410", "8412"), 
+                   labels = c("8449"=    "Gartnavel General Hospital",
+                              "8440"=	"Barrowlands",
+                              "8445"=	"Govan Cross",	
+                              "8450"=    "Elizabeth University Hospital", 
+                              "8443"=	"Paisley Road Toll",
+                              "8446"=    "Eglinton Toll", 
+                              "8441"=	"Bridgeton Cross",
+                              "8444"=	"Cessnock Subway Station",
+                              "8442"=    "City of Glasgow Collage (Riverside Campus)",
+                              "8448"=	"Queens Park West",
+                              "8439"=    "Bellgrove Railway Station (North)", 
+                              "8428"=	"Emirates Arena",
+                              "8424"=	"University of Strathclyde (North)",
+                              "8409"=	"Glasgow Cathedral",
+                              "8433"=	"University of Strathclyde (South)",
+                              "8432"=	"Bridge Street Subway",
+                              "8430"=	"Gallery of Modern Art",
+                              "8416"=	"Riverside Museum",
+                              "8438"=	"Finnieston Street",
+                              "8426"=    "Glasgow Science Centre", 
+                              "8411"=	"Argyle Street Railway Station",
+                              "8405"=	"Glasgow Caledonian University",
+                              "8407"=	"Merchant Square",
+                              "8447"=    "Queens Park Railway Station", 
+                              "8421"=	"Charing Cross Railway Station",
+                              "8420"=    "Kelvingrove Art Gallery", 
+                              "8406"=	"George Square", 	
+                              "8431"=	"Trongate",
+                              "8408"=	"St George's Cross",
+                              "8435"=	"University of Glasgow (East)",
+                              "8404"=	"Buchanan Street Bus Station",
+                              "8418"=    "Kelvinbridge Subway",
+                              "8402"=    "Waterloo Street",
+                              "8425"=	"Mitchell Library",	
+                              "8401"=    "Glasgow Central Station", 
+                              "8403"=	"Shields Road (North)",
+                              "8415"=    "S.E.C.C",
+                              "8422"=    "University of Glasgow (West)", 	
+                              "8417"=    "Botanic Gardens", 
+                              "8423"=    "Partick Interchange", 
+                              "8410"=    "St Enoch Square", 
+                              "8413"=    "Broomielaw", 
+                              "8412"=    "Glasgow Green"
+                   ))+
+  theme_bw() + 
+  labs(x="Station", y="Number of Departures", title = c("Departures by Station, Second Year")) 
+
