@@ -5,52 +5,16 @@ setwd("E:\\Urban Transport MSc\\Social Science Statistics 1\\Final Assignment\\N
 SSS1 <- read.csv("E:\\Urban Transport MSc\\Social Science Statistics 1\\Final Assignment\\NextBike\\SSS1 Output R\\SSS1_Data_Final.csv",
 header=TRUE, sep=",", na.strings="NA", dec=",", strip.white=TRUE)
 
-  
 levenetestall <- leveneTest(Freq~Events, SSS1, center = mean)  
 levenetestall <- xtable(levenetestall)
 write.csv(levenetestall, "E:\\Urban Transport MSc\\Social Science Statistics 1\\Final Assignment\\NextBike\\levenestestall.csv")
-leveneTest(Freq~Events, SSS1, center = mean)  
-"""
-Levene's Test for Homogeneity of Variance (center = mean)
-       Df F value    Pr(>F)    
-group  11   3.963 1.255e-05 ***
-      761                      
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-"""
 
 one <- subset(SSS1, Events == "Rain" | Events == "Fog" | Events == "Fog-Rain")
 leveneone <- leveneTest(Freq~Events, one, center = mean)  
 leveneone <- xtable(leveneone)
 write.csv(leveneone, "E:\\Urban Transport MSc\\Social Science Statistics 1\\Final Assignment\\NextBike\\levene_one.csv")
 
-leveneTest(Freq~Events, one, center = mean)  
-
-"""
-Levene's Test for Homogeneity of Variance (center = mean)
-       Df F value Pr(>F)
-group   2  0.1833 0.8325
-      607   
-"""
 AnovaModel.5 <- aov(Freq ~ Events, data=one)
 ANOVAthree <- summary(AnovaModel.5)
 ANOVAthree <- xtable(ANOVAthree)
 write.csv(ANOVAthree, "E:\\Urban Transport MSc\\Social Science Statistics 1\\Final Assignment\\NextBike\\ANOVAFINAL.csv")
-"""
-             Df   Sum Sq Mean Sq F value   Pr(>F)    
-Events        2   816941  408471   19.66 5.34e-09 ***
-Residuals   607 12612413   20778                     
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Rcmdr>  with(one, numSummary(Freq, groups=Events, statistics=c("mean", "sd")))
-             mean       sd data:n
-Fog      365.8718 153.7087     78
-Fog-Rain 276.9861 146.8207     72
-Rain     255.3304 142.0568    460
-RcmdrMsg: [5] WARNING: Warning in numSummary(Freq, groups = Events, statistics = c("mean",
-RcmdrMsg+ "sd")) :
-RcmdrMsg+ the following groups are empty: , Fog-Rain-Snow, Fog-Rain-Thunderstorm, Fog-Snow,
-RcmdrMsg+ Rain-Hail, Rain-Snow, Rain-Snow-Hail, Rain-Snow-Thunderstorm, Rain-Thunderstorm
-> 
-"""
