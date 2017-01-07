@@ -1,0 +1,26 @@
+#import packages 
+library(ggplot2) 
+library(weatherData)
+library(lubridate)
+library(plyr)
+library(timeDate)
+
+#set work dir
+setwd("E:\\Urban Transport MSc\\Social Science Statistics 1\\Final Assignment\\NextBike\\SSS1 Output R")
+
+#Import Base File 
+NextBike <- read.csv("E:\\Urban Transport MSc\\Social Science Statistics 1\\Final Assignment\\NextBike\\NextBike_Master_File_No_Weather_Data.csv", 
+                     header=TRUE, sep=",", na.strings="NA", dec=",", strip.white=TRUE)
+
+##count hires per discrete day
+#select data
+test <- subset(NextBike, select = c(Start.Timestamp))
+#clean data for missing seconds and format 
+test2 <- format(lubridate::dmy_hms(test$Start.Timestamp, truncated = 1),"%d.%m.%Y %H:%M")
+test2 <- strptime(test2, format = "%d.%m.%Y %H:%M", tz = "GMT")
+#cut by day and create table 
+day <- cut(test2, breaks = "days")
+day1 <- table(day)
+day2 <- as.data.frame(day1)
+#add day of week code vector  
+day2$Start_Day_Code <- as.POSIXlt(day2$day)$wday
