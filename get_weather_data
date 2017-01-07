@@ -1,0 +1,21 @@
+#create daily count file 
+write.csv(Daily_Counts, file = "Daily_Counts.csv")
+
+#Create weather data
+weather2014 <- getWeatherForDate("GLA", start_date = "2014-01-01", end_date="2014-12-31", opt_all_columns = TRUE)
+weather2015 <- getWeatherForDate("GLA", start_date = "2015-01-01", end_date="2015-12-31", opt_all_columns = TRUE)
+weather2016 <- getWeatherForDate("GLA", start_date = "2016-01-01", end_date="2016-08-30", opt_all_columns = TRUE)
+weather1 <- rbind(weather2014, weather2015)
+##fix column name BST TO GMT
+fix(weather2016)
+weather1416 <- rbind(weather1, weather2016)
+#fix weather1416 data "Date" to "day"
+fix(weather1416)
+#fix day2 data replace day to Date
+#merge count data with weather data )
+SSS1 <- merge(weather2014, weather2015, weather2016, by = "day")
+
+day2[day2 == "day"] <- "Date"
+SSS1 <- merge(day2, weather2014, weather2015, weather2016, by = "Date")
+
+write.csv(SSS1, file = "SSS1_Data_Final.csv")
