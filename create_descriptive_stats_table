@@ -1,0 +1,99 @@
+SSS1 <- read.csv("E:\\Urban Transport MSc\\Social Science Statistics 1\\Final Assignment\\NextBike\\SSS1 Output R\\SSS1_Data_Final.csv",
+                 header=TRUE, sep=",", na.strings="NA", dec=",", strip.white=TRUE)
+
+setwd("E:\\Urban Transport MSc\\Social Science Statistics 1\\Final Assignment\\NextBike\\SSS1 Output R")
+
+#select and reformat time
+SSS1$day <- strptime(SSS1$day, '%Y-%m-%d') 
+SSS1$day <- as.Date(strptime(SSS1$day, '%Y-%m-%d')) 
+
+SSS1$season.factor <-cut(SSS1$day, breaks = as.Date(c("2014-06-21", "2014-09-23", "2014-12-21", "2015-03-20",
+                                                      "2015-06-21", "2015-09-23", "2015-12-22", "2016-03-20", "2016-06-20", "2016-09-22")), labels = c("1", "2", 
+                                                                                                                                                       "3", "4", "5", "6", "7", "8", "9"))
+
+#####creating anova data
+
+one <- subset(SSS1, season.factor == "1")
+two <- subset(SSS1, season.factor == "2")
+three <- subset(SSS1, season.factor == "3")
+four <- subset (SSS1, season.factor == "4")
+five <- subset (SSS1, season.factor == "5")
+six <- subset(SSS1, season.factor == "6")
+seven <- subset (SSS1, season.factor == "7")
+eight <- subset (SSS1, season.factor == "8")
+nine <- subset(SSS1, season.factor == "9")
+nrow(one)
+nrow(two)
+nrow(three)
+nrow(four)
+nrow(five)
+nrow(six)
+nrow(seven)
+nrow(eight)
+nrow(nine)
+nrow(SSS1)
+
+#####mean 
+
+mean(one$Freq)
+mean(two$Freq)
+mean(three$Freq)
+mean(four$Freq)
+mean(five$Freq)
+mean(six$Freq)
+mean(seven$Freq)
+mean(eight$Freq)
+mean(nine$Freq)
+mean(SSS1$Freq)
+
+####median
+
+median(one$Freq)
+median(two$Freq)
+median(three$Freq)
+median(four$Freq)
+median(five$Freq)
+median(six$Freq)
+median(seven$Freq)
+median(eight$Freq)
+median(nine$Freq)
+median(SSS1$Freq)
+
+#standard deviation 
+
+sd(one$Freq)
+sd(two$Freq)
+sd(three$Freq)
+sd(four$Freq)
+sd(five$Freq)
+sd(six$Freq)
+sd(seven$Freq)
+sd(eight$Freq)
+sd(nine$Freq)
+sd(SSS1$Freq)
+
+###min 
+
+min(one$Freq)
+min(two$Freq)
+min(three$Freq)
+min(four$Freq)
+min(five$Freq)
+min(six$Freq)
+min(seven$Freq)
+min(eight$Freq)
+min(nine$Freq)
+min(SSS1$Freq)
+
+###max 
+
+max(one$Freq)
+max(two$Freq)
+max(three$Freq)
+max(four$Freq)
+max(five$Freq)
+max(six$Freq)
+max(seven$Freq)
+max(eight$Freq)
+max(nine$Freq)
+max(SSS1$Freq)
