@@ -1,0 +1,29 @@
+Crosstab <- NextBike
+Crosstab$Start.Com.Channel <- as.character((Crosstab$Start.Com.Channel))
+Crosstab$Start.Com.Channel[Crosstab$Start.Com.Channel=="aApp"] <- "Android"
+Crosstab$Start.Com.Channel[Crosstab$Start.Com.Channel=="aAppN"] <- "Android"
+Crosstab$Start.Com.Channel[Crosstab$Start.Com.Channel=="Android"] <- "Android"
+Crosstab$Start.Com.Channel[Crosstab$Start.Com.Channel=="Android (mobile website)"] <- "Android"
+Crosstab$Start.Com.Channel[Crosstab$Start.Com.Channel=="API"] <- "Other"
+Crosstab$Start.Com.Channel[Crosstab$Start.Com.Channel=="BC"] <- "On Board Computer"
+Crosstab$Start.Com.Channel[Crosstab$Start.Com.Channel=="CC"] <- "Call Centre"
+Crosstab$Start.Com.Channel[Crosstab$Start.Com.Channel=="iApp"] <- "iPhone"
+Crosstab$Start.Com.Channel[Crosstab$Start.Com.Channel=="iAppN"] <- "iPhone"
+Crosstab$Start.Com.Channel[Crosstab$Start.Com.Channel=="iPhone"] <- "iPhone"
+Crosstab$Start.Com.Channel[Crosstab$Start.Com.Channel=="iPhone (mobile website)"] <- "iPhone"
+Crosstab$Start.Com.Channel[Crosstab$Start.Com.Channel=="IVR"] <- "Interactive Voice Response"
+Crosstab$Start.Com.Channel[Crosstab$Start.Com.Channel=="SMS"] <- "Other"
+Crosstab$Start.Com.Channel[Crosstab$Start.Com.Channel=="nApp"] <- "Other"
+Crosstab$Start.Com.Channel[Crosstab$Start.Com.Channel=="Terminal"] <- "Other"
+Crosstab$Start.Com.Channel[Crosstab$Start.Com.Channel=="Web"] <- "Website"
+Crosstab$Start.Com.Channel[Crosstab$Start.Com.Channel=="Web/m"] <- "Other"
+
+crosstable <- table(Crosstab$Start.Com.Channel, Crosstab$Start.Day)
+
+CrossTable(Crosstab$Start.Day, Crosstab$Start.Com.Channel, fisher = TRUE, chisq = TRUE, expected = TRUE, sresid = TRUE)  
+
+
+write.csv(crosstable, "E:\\Urban Transport MSc\\Social Science Statistics 1\\Final Assignment\\NextBike\\SSS1 Output R\\cross_table.csv")
+
+chitest <- chisq.test(Crosstab$Start.Com.Channel, Crosstab$Start.Day)
+chisq.test(Crosstab$Start.Day, Crosstab$Start.Com.Channel)
