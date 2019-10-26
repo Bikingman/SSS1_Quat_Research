@@ -1,0 +1,65 @@
+library(glmmTMB)
+
+
+#import weather data  
+setwd("D:\\Urban Transport MSc\\Mapping Ridership in Edinburgh Paper\\weather data")
+weather <- read.csv("Edinburgh daily weather1.csv", sep=',', header = T)
+dim(weather)
+
+colnames(weather)[colnames(weather) == 'Temerature_C'] <- 'Temperature_C'
+
+#get strava data
+setwd("D:\\Documents 2\\Strava Scotland\\Strava_2015_recon\\Edinburgh_edges")
+connect2015 <- read.csv("city_centre_links.csv", sep = ',', header = T)
+
+#aggregate data to daily level
+dailycounts <- aggregate(total_activity_count ~ edge_id + year + day, data = connect2015, FUN = sum)
+fday <- subset(dailycounts, select = c(edge_id, day, total_activity_count))
+
+#import bike index data
+setwd("D:\\Documents 2\\Strava Scotland\\Strava_2015_recon\\Edinburgh_edges")
+bike_index <- read.csv("bike_index.csv", sep=',', header = T)
+
+#merge strava data with weather data 
+dataday <- merge(fday, weather, by = c("day"), all = T)#for weather object, see daily weather code
+dataday$total_activity_count[is.na(dataday$total_activity_count)] <- 0 
+
+#connect bike index with correct columns 
+bike_index = bike_index[c(2:4)]
+head(bike_index)
+data1day <- merge(dataday, bike_index, by.x = "edge_id", by.y = "ID", all.x = TRUE, all.y = FALSE)
+
+setwd("D:\\Documents 2\\Strava Scotland\\Strava_2015_recon\\Edinburgh_edges")
+write.csv(data1day, "model_data_day.csv")
+
+
+m1 <- glmmTMB(total_activity_count ~
+                scale(Temperature_C) +
+                scale(Max_gusts_knots) +
+                scale(Rainfall_mm) + 
+                scale(Cloud_Coverage_oktas) +
+                as.factor(edi_mino_1) +
+                scale(bike_index) + 
+                scale(bike_index*Temperature_C) + 
+                scale(bike_index*Max_gusts_knots) +
+                scale(bike_index*Rainfall_mm) +
+                scale(bike_index*Cloud_Coverage_oktas) + 
+                (1|edge_id),
+              data=data1day,
+              family="nbinom2")
+
+summary(m1)
+
+m2 <- glmmTMB(total_activity_count ~
+                scale(Temperature_C) +
+                scale(Max_gusts_knots) +
+                scale(Rainfall_mm) + 
+                scale(Cloud_Coverage_oktas) +
+                as.factor(edi_mino_1) +
+                scale(bike_index) + 
+                (1|edge_id),
+              data=data1day,
+              family="nbinom2")
+
+summary(m2)
+

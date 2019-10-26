@@ -1,0 +1,46 @@
+
+library(foreign)
+library(dplyr)
+setwd("C:\\Users\\Daniel I. Patterson\\Desktop\\Bikeability Paper\\Data\\road network\\meters")
+bike_in <- read.dbf("edi_roads_04_BNG.dbf")
+
+colnames(bike_in)[colnames(bike_in) == 'slopemean'] <- 'slopeslope'
+
+bike_in$slopeslope[is.na(bike_in$slopeslope)] <- 0 
+bike_in$dest[is.na(bike_in$dest)] <- 0 
+bike_in$Conn[is.na(bike_in$Conn)] <- 0 
+bike_in$bikel[is.na(bike_in$bikel)] <- 0 
+
+which(is.na(bike_in$slopeslope))
+which(is.na(bike_in$dest))
+which(is.na(bike_in$Conn))
+which(is.na(bike_in$bikel))
+
+bike_in$meter <- bike_in$KM*1000
+
+bike_in$dest_den <- bike_in$dest/bike_in$meter
+bike_in$Conn_des <- bike_in$Conn/bike_in$meter
+bike_in$bikel_des <- bike_in$bikel/bike_in$meter
+
+bike_in$des_Q <- ntile(bike_in$dest_den, 10) 
+bike_in$con_Q <- ntile(bike_in$Conn_des, 10)
+bike_in$lanes_Q <- ntile(bike_in$bikel_des, 10)
+bike_in$slope_Q <- ifelse(bike_in$slopeslope == 0, 10,
+                          ifelse(bike_in$slopeslope > 0 & bike_in$slopeslope < .5, 9, 
+                                 ifelse(bike_in$slopeslope > .5 & bike_in$slopeslope < 1, 8,
+                                        ifelse(bike_in$slopeslope > 1 & bike_in$slopeslope < 2, 7,
+                                               ifelse(bike_in$slopeslope > 2 & bike_in$slopeslope < 3, 6,
+                                                      ifelse(bike_in$slopeslope > 3 & bike_in$slopeslope < 5, 5, 
+                                                             ifelse(bike_in$slopeslope > 5 & bike_in$slopeslope < 7, 4, 
+                                                                    ifelse(bike_in$slopeslope > 7 & bike_in$slopeslope < 10, 3, 
+                                                                           ifelse(bike_in$slopeslope > 10 & bike_in$slopeslope < 20, 2,
+                                                                                  ifelse(bike_in$slopeslope > 20, 1, 0))))))))))
+
+bike_in$bike_index <- (2*bike_in$lanes_Q) + bike_in$des_Q + bike_in$con_Q + bike_in$slope_Q 
+
+which(is.na(bike_in$slope_Q))
+which(is.na(bike_in$des_Q))
+which(is.na(bike_in$con_Q))
+which(is.na(bike_in$lanes_Q))
+
+write.csv(bike_in, "bike_index.csv")

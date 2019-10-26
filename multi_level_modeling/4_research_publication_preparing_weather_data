@@ -1,0 +1,135 @@
+#DAILY LEVEL
+
+library(dmm)
+
+#import weather data  
+setwd("D:\\Urban Transport MSc\\Mapping Ridership in Edinburgh Paper\\weather data")
+weather <- read.csv("Edinburgh hourly weather1.csv", sep=',', header = T)
+dim(weather)
+
+#replace "tr" with 0
+weather$Hourly_Rainfall_Total_mm_[weather$Hourly_Rainfall_Total_mm_ == "tr"] <- 0
+
+#select only 2015 weather 
+weather <- subset(weather, year == 2015)
+
+#rename column for convience
+colnames(weather)[colnames(weather) == 'Hour'] <- 'hour'
+colnames(weather)[colnames(weather) == 'Hourly_Maximum_Gust._knots'] <- 'Max_gusts_knots'
+colnames(weather)[colnames(weather) == 'Hourly_Mean_Windspeed_knots'] <- 'mean_Windspeed_knots'
+colnames(weather)[colnames(weather) == 'Hourly_Total_Cloud_Cover_oktas'] <- 'Cloud_Coverage_oktas'
+colnames(weather)[colnames(weather) == 'Hourly_Rainfall_Total_mm_'] <- 'Rainfall_mm'
+colnames(weather)[colnames(weather) == 'Hourly_Temperature_C'] <- 'Temperature_C'
+dim(weather)
+
+#look for NAs 
+which(weather == "n/a")
+
+#write NA where NA
+weather[weather == "n/a" ] <- NA
+
+#omit NAs
+weather <- na.omit(weather)
+
+#look for NAs 
+which(weather == "n/a")
+
+#check size
+dim(weather)
+
+#prep tempurature data 
+weather$Temerature_C <- as.numeric(unfactor(weather$Temperature_C))
+
+#prep gust data 
+weather$Max_gusts_knots <- as.numeric(unfactor(weather$Max_gusts_knots))
+
+#aggregate weather by month, take means from 4 and max of gusts
+weather1day <- aggregate(cbind(mean_Windspeed_knots, Cloud_Coverage_oktas, Rainfall_mm, Temperature_C) ~ day, data = weather, FUN=mean)
+
+#aggreate gust for max 
+weather1day1.0 <- aggregate(Max_gusts_knots ~ day, data = weather, FUN = max)
+
+#reconnect data
+weather1day <- cbind(weather1day, weather1day1.0)
+
+#select wanted data
+weather <- weather1day[c(1:5, 7)]
+
+#check data
+head(weather)
+
+#write data file - note hourly is confusing, should say daily or day
+setwd("D:\\Urban Transport MSc\\Mapping Ridership in Edinburgh Paper\\weather data")
+write.csv(weather, "Edinburgh daily weather1.csv")
+
+
+
+
+MONTHLY LEVEL
+
+library(dmm)
+library(lubridate)
+
+#import weather data  
+setwd("D:\\Urban Transport MSc\\Mapping Ridership in Edinburgh Paper\\weather data")
+weather <- read.csv("Edinburgh hourly weather.csv", sep=',', header = T)
+dim(weather)
+
+#replace "tr" with 0
+weather$Hourly_Rainfall_Total_mm_[weather$Hourly_Rainfall_Total_mm_ == "tr"] <- 0
+
+#select only 2015 weather 
+weather <- subset(weather, year == 2015)
+
+#rename column for convience
+colnames(weather)[colnames(weather) == 'Hour'] <- 'hour'
+colnames(weather)[colnames(weather) == 'Hourly_Maximum_Gust._knots'] <- 'Max_gusts_knots'
+colnames(weather)[colnames(weather) == 'Hourly_Mean_Windspeed_knots'] <- 'mean_Windspeed_knots'
+colnames(weather)[colnames(weather) == 'Hourly_Total_Cloud_Cover_oktas'] <- 'Cloud_Coverage_oktas'
+colnames(weather)[colnames(weather) == 'Hourly_Rainfall_Total_mm_'] <- 'Rainfall_mm'
+colnames(weather)[colnames(weather) == 'Hourly_Temperature_C'] <- 'Temperature_C'
+dim(weather)
+
+#look for NAs 
+which(weather == "n/a")
+
+#write NA where NA
+weather[weather == "n/a" ] <- NA
+
+#omit NAs
+weather <- na.omit(weather)
+
+#look for NAs 
+which(weather == "n/a")
+
+#check size
+dim(weather)
+
+#prep tempurature data 
+weather$Temerature_C <- as.numeric(unfactor(weather$Temperature_C))
+
+#prep gust data 
+weather$Max_gusts_knots <- as.numeric(unfactor(weather$Max_gusts_knots))
+
+#generate monthly value
+weather$month <- month(as.POSIXlt(weather$Date, format = "%d/%m/%Y", tz = "GMT"))
+
+#aggregate weather by month, take means from 4 and max of gusts
+weather1day <- aggregate(cbind(mean_Windspeed_knots, Cloud_Coverage_oktas, Rainfall_mm, Temperature_C) ~ month, data = weather, FUN=mean)
+
+
+#aggreate gust for max 
+weather1day1.0 <- aggregate(Max_gusts_knots ~ month, data = weather, FUN = max)
+
+#reconnect data
+weather1day <- cbind(weather1day, weather1day1.0)
+
+#select wanted data
+weather <- weather1day[c(1:5, 7)]
+
+#check data
+head(weather)
+
+setwd("D:\\Urban Transport MSc\\Mapping Ridership in Edinburgh Paper\\weather data")
+write.csv(weather, "Edinburgh month weather1.csv")
+

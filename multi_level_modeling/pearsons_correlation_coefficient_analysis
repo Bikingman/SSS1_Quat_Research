@@ -1,0 +1,150 @@
+#################################################################################PCCA at daily level
+#get strava data
+setwd("D:\\Documents 2\\Strava Scotland\\Strava_2015_recon\\Edinburgh_edges")
+connect2015 <- read.csv("city_centre_links.csv", sep = ',', header = T)
+
+Links <- subset(connect2015,             connect2015$edge_id == 371673 | connect2015$edge_id == 785342
+                                         | connect2015$edge_id == 23799 | connect2015$edge_id == 788142
+                                         | connect2015$edge_id == 598903 | connect2015$edge_id == 242916 | connect2015$edge_id == 26314
+                                         | connect2015$edge_id == 599944 | connect2015$edge_id == 72721 | connect2015$edge_id == 555981
+                                         | connect2015$edge_id == 699410 | connect2015$edge_id == 761548 | connect2015$edge_id == 737621
+                                         | connect2015$edge_id == 431204 
+                                         | connect2015$edge_id == 431207 | connect2015$edge_id == 139194
+                                          | connect2015$edge_id == 2232)
+
+
+
+#generate month variable 
+Links$month <- ifelse(Links$day >= 1 & Links$day <= 31, 1, 
+                      ifelse(Links$day >= 32 & Links$day <= 59, 2, 
+                             ifelse(Links$day >= 60 & Links$day <= 90, 3, 
+                                    ifelse(Links$day >= 91 & Links$day <= 120, 4, 
+                                           ifelse(Links$day >= 121 & Links$day <= 151, 5, 
+                                                  ifelse(Links$day >= 152 & Links$day <= 181, 6, 
+                                                         ifelse(Links$day >= 182 & Links$day <=212 , 7, 
+                                                                ifelse(Links$day >= 213 & Links$day <= 243, 8,
+                                                                       ifelse(Links$day >= 244 & Links$day <= 273, 9, 
+                                                                              ifelse(Links$day >= 274 & Links$day <= 304, 10, 
+                                                                                     ifelse(Links$day >= 305 & Links$day <= 334, 11, 
+                                                                                            ifelse(Links$day >= 335 & Links$day <= 365, 12, 0))))))))))))
+
+which(Links$month==0)
+
+Links$weekend <- ifelse(
+  Links$day == 3 | Links$day == 4 |
+    Links$day == 10 | Links$day == 11 |
+    Links$day == 17 | Links$day == 18 |
+    Links$day == 24 | Links$day == 25 |
+    Links$day == 31 | Links$day == 32 |
+    Links$day == 38 | Links$day == 39 | 
+    Links$day == 45 | Links$day == 46 |
+    Links$day == 52 | Links$day == 53 |
+    Links$day == 59 | Links$day == 60 |
+    Links$day == 66 | Links$day == 67 |
+    Links$day == 73 | Links$day == 74 |
+    Links$day == 80 | Links$day == 81 |
+    Links$day == 87 | Links$day == 88 |
+    Links$day == 94 | Links$day == 95 |
+    Links$day == 101 | Links$day == 102 |
+    Links$day == 108 | Links$day == 109 |
+    Links$day == 115 | Links$day == 116 |
+    Links$day == 122 | Links$day == 123 |
+    Links$day == 129 | Links$day == 130 |
+    Links$day == 136 | Links$day == 137 |
+    Links$day == 143 | Links$day == 144 |
+    Links$day == 150 | Links$day == 151 | 
+    Links$day == 157 | Links$day == 158 | 
+    Links$day == 164 | Links$day == 165 |
+    Links$day == 171 | Links$day == 172 |
+    Links$day == 178 | Links$day == 179 |
+    Links$day == 185 | Links$day == 186 |                               
+    Links$day == 192 | Links$day == 193 |
+    Links$day == 199 | Links$day == 200 | 
+    Links$day == 206 | Links$day == 207 |
+    Links$day == 213 | Links$day == 214 |
+    Links$day == 220 | Links$day == 221 |
+    Links$day == 227 | Links$day == 228 | 
+    Links$day == 234 | Links$day == 235 | 
+    Links$day == 241 | Links$day == 242 | 
+    Links$day == 248 | Links$day == 249 | 
+    Links$day == 255 | Links$day == 256 | 
+    Links$day == 262 | Links$day == 263 | 
+    Links$day == 269 | Links$day == 270 | 
+    Links$day == 276 | Links$day == 277 | 
+    Links$day == 283 | Links$day == 284 | 
+    Links$day == 290 | Links$day == 291 | 
+    Links$day == 297 | Links$day == 298 | 
+    Links$day == 304 | Links$day == 305 | 
+    Links$day == 311 | Links$day == 312 | 
+    Links$day == 318 | Links$day == 319 |
+    Links$day == 325 | Links$day == 326 | 
+    Links$day == 332 | Links$day == 333 | 
+    Links$day == 339 | Links$day == 340 | 
+    Links$day == 346 | Links$day == 347 | 
+    Links$day == 353 | Links$day == 354 | 
+    Links$day == 360 | Links$day == 361, 1, 0)
+
+
+which(Links$day == 0)
+
+
+
+setwd("D:\\Documents 2\\Strava Scotland\\Strava_2015_recon\\Edinburgh_edges")
+sensor <- read.csv( "bike_sensor_counts.csv", sep=',', header=T)
+sensor_day <- aggregate(count ~ edge_id + day, data = sensor, FUN = sum)
+
+Links_counts <- merge(Links, sensor_day, by = c("edge_id", "day"), all= F)
+
+sensor_month <- aggregate(count ~ edge_id + month, data = sensor, FUN = sum)
+
+
+setwd("D:\\Documents 3\\Strava_research_paper\\PCCA\\data")
+write.csv(Links_counts, "prepared_data.csv")
+
+Links = Links_counts
+
+
+daily0 <- subset(Links, Links$day >= 0) #object placeholder
+counts1 <- aggregate(cbind(total_activity_count, commute_count, count) ~ edge_id + day + weekend, data = daily0, FUN = sum)
+
+#generate recreation count
+counts1$rec_trips <- counts1$total_activity_count - counts1$commute_count
+
+#parse final for cor matrix
+daily1 <- subset(counts1, select = c(total_activity_count, commute_count, count, rec_trips))
+
+#extract weekend and parse
+daily_weekend <- subset(counts1, counts1$weekend == 1, select = c(total_activity_count, commute_count, count, rec_trips))
+
+#extract weekday and parse
+daily_weekday <- subset(counts1, counts1$weekend == 0, select = c(total_activity_count, commute_count, count, rec_trips))
+
+
+
+monthly_weekends <- subset(Links, Links$weekend == 1 )
+monthly_weekends2 <- aggregate(cbind(total_activity_count, commute_count) ~ edge_id + month, data = monthly_weekends, FUN = sum)
+monthly_weekends3 <- merge(monthly_weekends2, sensor_month, by = c("edge_id", "month"), all = F)
+monthly_weekend4 <- subset(monthly_weekends3, select = c(total_activity_count, commute_count, count))
+monthly_weekend4$rec_count <- monthly_weekend4$total_activity_count - monthly_weekend4$commute_count
+
+monthly_weekdays <- subset(Links, Links$weekend == 0 )
+monthly_weekdays2 <- aggregate(cbind(total_activity_count, commute_count) ~ edge_id + month, data = monthly_weekdays, FUN = sum)
+monthly_weekdays3 <- merge(monthly_weekdays2, sensor_month, by = c("edge_id", "month"), all = F)
+monthly_weekdays4 <- subset(monthly_weekdays3, select = c(total_activity_count, commute_count, count))
+monthly_weekdays4$rec_count <- monthly_weekdays4$total_activity_count - monthly_weekdays4$commute_count
+
+monthly_agg <- subset(Links, Links$month >= 0) # holder 
+monthly_agg2 <- aggregate(cbind(total_activity_count, commute_count) ~ edge_id + month, data = monthly_agg, FUN = sum )
+monthly_agg3 <- merge(monthly_agg2, sensor_month, by = c("edge_id", "month"), all = F)
+monthly_agg4 <- subset(monthly_agg3, select = c(total_activity_count, commute_count, count))
+monthly_agg4$rec_count <- monthly_agg4$total_activity_count - monthly_agg4$commute_count
+
+
+cor(daily1)
+cor(daily_weekday)
+cor(daily_weekday)
+
+cor(monthly_agg4)
+cor(monthly_weekdays4)
+cor(monthly_weekend4)
+

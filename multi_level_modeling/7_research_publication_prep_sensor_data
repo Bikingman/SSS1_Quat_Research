@@ -1,0 +1,513 @@
+
+
+#setwd
+setwd("D:\\Urban Transport MSc\\Mapping Ridership in Edinburgh Paper\\Bike Count Automatic Counters\\Final Counters")
+
+library(lubridate)
+library(timeDate)
+library(dplyr)
+library(ggplot2)
+library(MASS)
+###Portobello
+
+par(mfrow=c(1,1), mar=c(2,5,2,1), las=1, bty="n")
+
+###StenhouseDrive
+#get data from last section 
+StenhouseDrive <- read.csv("26stenhousedrive.csv", sep=',', header=T)
+#format into POSlt
+StenhouseDrive$date <- format(lubridate::dmy(StenhouseDrive$date),"%d/%m/%Y")
+#set time
+StenhouseDrive$date <- strptime(StenhouseDrive$date, format = "%d/%m/%Y", tz = "GMT")
+#year vec
+StenhouseDrive$year <- year(as.POSIXlt(StenhouseDrive$date, format="%d/%m/%Y"))
+#month vector 
+StenhouseDrive$month <- month(as.POSIXlt(StenhouseDrive$date, format="%d/%m/%Y"))
+# day vector 
+StenhouseDrive$day <- yday(as.POSIXlt(StenhouseDrive$date, format = "%d/%m/%Y", tz = "GMT"))
+#rename time to hour 
+colnames(StenhouseDrive)[colnames(StenhouseDrive) == 'time'] <- 'hour'
+#add total count
+StenhouseDrive$count <- StenhouseDrive$channel_1 + StenhouseDrive$channel_2
+#create edge ID
+StenhouseDrive$edge_id <- rep("785342", nrow(StenhouseDrive))
+#check data
+StenhouseDrive <- subset(StenhouseDrive, year == 2015)
+plot(StenhouseDrive$day, StenhouseDrive$count, xlab = "day", ylab= "count")
+abline(v=200, col="purple")
+abline(v=220, col="purple")
+abline(v=284, col="purple")
+abline(v=290, col="purple")
+title("StenhouseDrive")
+dim(StenhouseDrive)
+unique(StenhouseDrive$day)
+StenhouseDrive <- subset(StenhouseDrive, select = c("hour", "day", "month", "year", "count", "edge_id"))
+dim(StenhouseDrive)
+unique(StenhouseDrive$year)
+
+###CorstorphineRoad
+#get data from last section 
+CorstorphineRoad <- read.csv("29corstorphineroad.csv", sep=',', header=T)
+#format into POSlt
+CorstorphineRoad$date <- format(lubridate::dmy(CorstorphineRoad$date),"%d/%m/%Y")
+#set time
+CorstorphineRoad$date <- strptime(CorstorphineRoad$date, format = "%d/%m/%Y", tz = "GMT")
+#year vec
+CorstorphineRoad$year <- year(as.POSIXlt(CorstorphineRoad$date, format="%d/%m/%Y"))
+#month vector 
+CorstorphineRoad$month <- month(as.POSIXlt(CorstorphineRoad$date, format="%d/%m/%Y"))
+# day vector 
+CorstorphineRoad$day <- yday(as.POSIXlt(CorstorphineRoad$date, format = "%d/%m/%Y", tz = "GMT"))
+#rename time to hour 
+colnames(CorstorphineRoad)[colnames(CorstorphineRoad) == 'time'] <- 'hour'
+#add total count
+CorstorphineRoad$count <- CorstorphineRoad$channel_1 + CorstorphineRoad$channel_2
+#create edge ID
+CorstorphineRoad$edge_id <- rep("788142", nrow(CorstorphineRoad))
+#check data
+CorstorphineRoad <- subset(CorstorphineRoad, year == 2015)
+unique(CorstorphineRoad$day)
+plot(CorstorphineRoad$day, CorstorphineRoad$count, xlab = "day", ylab= "count")
+abline(v=200, col="purple")
+abline(v=220, col="purple")
+abline(v=284, col="purple")
+abline(v=290, col="purple")
+title("CorstorphineRoad")
+dim(CorstorphineRoad)
+CorstorphineRoad <- subset(CorstorphineRoad, select = c("hour", "day", "month", "year", "count", "edge_id"))
+dim(CorstorphineRoad)
+unique(CorstorphineRoad$year)
+
+###DalryRoad
+#get data from last section 
+DalryRoad <- read.csv("30dalryroad.csv", sep=',', header=T)
+#format into POSlt
+DalryRoad$date <- format(lubridate::dmy(DalryRoad$date),"%d/%m/%Y")
+#set time
+DalryRoad$date <- strptime(DalryRoad$date, format = "%d/%m/%Y", tz = "GMT")
+#year vec
+DalryRoad$year <- year(as.POSIXlt(DalryRoad$date, format="%d/%m/%Y"))
+#month vector 
+DalryRoad$month <- month(as.POSIXlt(DalryRoad$date, format="%d/%m/%Y"))
+# day vector 
+DalryRoad$day <- yday(as.POSIXlt(DalryRoad$date, format = "%d/%m/%Y", tz = "GMT"))
+#rename time to hour 
+colnames(DalryRoad)[colnames(DalryRoad) == 'time'] <- 'hour'
+#add total count
+DalryRoad$count <- DalryRoad$channel_1 + DalryRoad$channel_2
+#create edge ID
+DalryRoad$edge_id <- rep("598903", nrow(DalryRoad))
+#check data
+DalryRoad <- subset(DalryRoad, year == 2015)
+unique(DalryRoad$day)
+plot(DalryRoad$day, DalryRoad$count, xlab = "day", ylab= "count")
+abline(v=200, col="purple")
+abline(v=220, col="purple")
+abline(v=284, col="purple")
+abline(v=290, col="purple")
+title("DalryRoad")
+dim(DalryRoad)
+DalryRoad <- subset(DalryRoad, select = c("hour", "day", "month", "year", "count", "edge_id"))
+dim(DalryRoad)
+unique(DalryRoad$year)
+
+###DundeeStreet
+#get data from last section 
+DundeeStreet <- read.csv("31dundeestreet.csv", sep=',', header=T)
+#format into POSlt
+DundeeStreet$date <- format(lubridate::dmy(DundeeStreet$date),"%d/%m/%Y")
+#set time
+DundeeStreet$date <- strptime(DundeeStreet$date, format = "%d/%m/%Y", tz = "GMT")
+#year vec
+DundeeStreet$year <- year(as.POSIXlt(DundeeStreet$date, format="%d/%m/%Y"))
+#month vector 
+DundeeStreet$month <- month(as.POSIXlt(DundeeStreet$date, format="%d/%m/%Y"))
+# day vector 
+DundeeStreet$day <- yday(as.POSIXlt(DundeeStreet$date, format = "%d/%m/%Y", tz = "GMT"))
+#rename time to hour 
+colnames(DundeeStreet)[colnames(DundeeStreet) == 'time'] <- 'hour'
+#add total count
+DundeeStreet$count <- DundeeStreet$channel_1 + DundeeStreet$channel_2
+#create edge ID
+DundeeStreet$edge_id <- rep("242916", nrow(DundeeStreet))
+#check data
+DundeeStreet <- subset(DundeeStreet, year == 2015)
+unique(DundeeStreet$day)
+plot(DundeeStreet$day, DundeeStreet$count, xlab = "day", ylab= "count")
+abline(v=200, col="purple")
+abline(v=220, col="purple")
+abline(v=284, col="purple")
+abline(v=290, col="purple")
+title("DundeeStreet")
+dim(DundeeStreet)
+DundeeStreet <- subset(DundeeStreet, select = c("hour", "day", "month", "year", "count", "edge_id"))
+dim(DundeeStreet)
+unique(DundeeStreet$year)
+
+###InverleithRow
+#get data from last section 
+InverleithRow <- read.csv("32inverleithrow.csv", sep=',', header=T)
+#format into POSlt
+InverleithRow$date <- format(lubridate::dmy(InverleithRow$date),"%d/%m/%Y")
+#set time
+InverleithRow$date <- strptime(InverleithRow$date, format = "%d/%m/%Y", tz = "GMT")
+#year vec
+InverleithRow$year <- year(as.POSIXlt(InverleithRow$date, format="%d/%m/%Y"))
+#month vector 
+InverleithRow$month <- month(as.POSIXlt(InverleithRow$date, format="%d/%m/%Y"))
+# day vector 
+InverleithRow$day <- yday(as.POSIXlt(InverleithRow$date, format = "%d/%m/%Y", tz = "GMT"))
+#rename time to hour 
+colnames(InverleithRow)[colnames(InverleithRow) == 'time'] <- 'hour'
+#add total count
+InverleithRow$count <- InverleithRow$channel_1 + InverleithRow$channel_2
+#create edge ID
+InverleithRow$edge_id <- rep("26314", nrow(InverleithRow))
+#check data
+InverleithRow <- subset(InverleithRow, year == 2015)
+unique(InverleithRow$day)
+plot(InverleithRow$day, InverleithRow$count, xlab = "day", ylab= "count")
+abline(v=200, col="purple")
+abline(v=220, col="purple")
+abline(v=284, col="purple")
+abline(v=290, col="purple")
+abline(v=312, col="purple")
+abline(v=318, col="purple")
+title("InverleithRow")
+dim(InverleithRow)
+InverleithRow <- subset(InverleithRow, select = c("hour", "day", "month", "year", "count", "edge_id"))
+dim(InverleithRow)
+unique(InverleithRow$year)
+
+###LondonRoad
+#get data from last section 
+LondonRoad <- read.csv("33londonroad.csv", sep=',', header=T)
+#format into POSlt
+LondonRoad$date <- format(lubridate::dmy(LondonRoad$date),"%d/%m/%Y")
+#set time
+LondonRoad$date <- strptime(LondonRoad$date, format = "%d/%m/%Y", tz = "GMT")
+#year vec
+LondonRoad$year <- year(as.POSIXlt(LondonRoad$date, format="%d/%m/%Y"))
+#month vector 
+LondonRoad$month <- month(as.POSIXlt(LondonRoad$date, format="%d/%m/%Y"))
+# day vector 
+LondonRoad$day <- yday(as.POSIXlt(LondonRoad$date, format = "%d/%m/%Y", tz = "GMT"))
+#rename time to hour 
+colnames(LondonRoad)[colnames(LondonRoad) == 'time'] <- 'hour'
+#add total count
+LondonRoad$count <- LondonRoad$channel_1 + LondonRoad$channel_2
+#create edge ID
+LondonRoad$edge_id <- rep("599944", nrow(LondonRoad))
+#check data
+LondonRoad <- subset(LondonRoad, year == 2015)
+unique(LondonRoad$day)
+plot(LondonRoad$day, LondonRoad$count, xlab = "day", ylab= "count")
+abline(v=200, col="purple")
+abline(v=220, col="purple")
+abline(v=284, col="purple")
+abline(v=290, col="purple")
+title("LondonRoad")
+dim(LondonRoad)
+LondonRoad <- subset(LondonRoad, select = c("hour", "day", "month", "year", "count", "edge_id"))
+dim(LondonRoad)
+unique(LondonRoad$year)
+
+#Nicolson Street 
+Nicolson <- read.csv("34nicolsonstreet.csv", sep=',', header=T)
+#format into POSlt
+Nicolson$date <- format(lubridate::dmy(Nicolson$date),"%d/%m/%Y")
+#set time
+Nicolson$date <- strptime(Nicolson$date, format = "%d/%m/%Y", tz = "GMT")
+#year vec
+Nicolson$year <- year(as.POSIXlt(Nicolson$date, format="%d/%m/%Y"))
+#month vector 
+Nicolson$month <- month(as.POSIXlt(Nicolson$date, format="%d/%m/%Y"))
+# day vector 
+Nicolson$day <- yday(as.POSIXlt(Nicolson$date, format = "%d/%m/%Y", tz = "GMT"))
+#rename time to hour 
+colnames(Nicolson)[colnames(Nicolson) == 'time'] <- 'hour'	
+#add total count
+Nicolson$count <- Nicolson$channel_1 + Nicolson$channel_2
+#create edge ID
+Nicolson$edge_id <- rep("72721", nrow(Nicolson))
+#check data
+Nicolson <- subset(Nicolson, year == 2015)
+plot(Nicolson$day, Nicolson$count, xlab = "day", ylab= "count")
+abline(v=200, col="purple")
+abline(v=220, col="purple")
+abline(v=284, col="purple")
+abline(v=290, col="purple")
+title("NicolsonStreet")
+dim(Nicolson)
+unique(Nicolson$day)
+Nicolson <- subset(Nicolson, select = c("hour", "day", "month", "year", "count", "edge_id"))
+dim(Nicolson)
+unique(Nicolson$year)
+
+###QueensFerryRoad
+#get data from last section 
+QueensFerryRoad <- read.csv("35queensferryroad.csv", sep=',', header=T)
+#format into POSlt
+QueensFerryRoad$date <- format(lubridate::dmy(QueensFerryRoad$date),"%d/%m/%Y")
+#set time
+QueensFerryRoad$date <- strptime(QueensFerryRoad$date, format = "%d/%m/%Y", tz = "GMT")
+#year vec
+QueensFerryRoad$year <- year(as.POSIXlt(QueensFerryRoad$date, format="%d/%m/%Y"))
+#month vector 
+QueensFerryRoad$month <- month(as.POSIXlt(QueensFerryRoad$date, format="%d/%m/%Y"))
+# day vector 
+QueensFerryRoad$day <- yday(as.POSIXlt(QueensFerryRoad$date, format = "%d/%m/%Y", tz = "GMT"))
+#rename time to hour 
+colnames(QueensFerryRoad)[colnames(QueensFerryRoad) == 'time'] <- 'hour'	
+#add total count
+QueensFerryRoad$count <- QueensFerryRoad$channel_1 + QueensFerryRoad$channel_2
+#create edge ID
+QueensFerryRoad$edge_id <- rep("555981", nrow(QueensFerryRoad))
+#check data
+QueensFerryRoad <- subset(QueensFerryRoad, year == 2015)
+unique(QueensFerryRoad$day)
+plot(QueensFerryRoad$day, QueensFerryRoad$count, xlab = "day", ylab= "count")
+abline(v=200, col="purple")
+abline(v=220, col="purple")
+abline(v=284, col="purple")
+abline(v=290, col="purple")
+title("QueensFerryRoad")
+dim(QueensFerryRoad)
+QueensFerryRoad <- subset(QueensFerryRoad, select = c("hour", "day", "month", "year", "count", "edge_id"))
+dim(QueensFerryRoad)
+unique(QueensFerryRoad$year)
+
+###RaeBurnPlace
+#get data from last section 
+RaeBurnPlace <- read.csv("36raeburnplace.csv", sep=',', header=T)
+#format into POSlt
+RaeBurnPlace$date <- format(lubridate::dmy(RaeBurnPlace$date),"%d/%m/%Y")
+#set time
+RaeBurnPlace$date <- strptime(RaeBurnPlace$date, format = "%d/%m/%Y", tz = "GMT")
+#year vec
+RaeBurnPlace$year <- year(as.POSIXlt(RaeBurnPlace$date, format="%d/%m/%Y"))
+#month vector 
+RaeBurnPlace$month <- month(as.POSIXlt(RaeBurnPlace$date, format="%d/%m/%Y"))
+# day vector 
+RaeBurnPlace$day <- yday(as.POSIXlt(RaeBurnPlace$date, format = "%d/%m/%Y", tz = "GMT"))
+#rename time to hour 
+colnames(RaeBurnPlace)[colnames(RaeBurnPlace) == 'time'] <- 'hour'	
+#add total count
+RaeBurnPlace$count <- RaeBurnPlace$channel_1 + RaeBurnPlace$channel_2
+#create edge ID
+RaeBurnPlace$edge_id <- rep("699410", nrow(RaeBurnPlace))
+#check data
+RaeBurnPlace <- subset(RaeBurnPlace, year == 2015)
+unique(RaeBurnPlace$day)
+plot(RaeBurnPlace$day, RaeBurnPlace$count, xlab = "day", ylab= "count")
+abline(v=200, col="purple")
+abline(v=220, col="purple")
+abline(v=284, col="purple")
+abline(v=290, col="purple")
+title("RaeBurnPlace")
+dim(RaeBurnPlace)
+RaeBurnPlace <- subset(RaeBurnPlace, select = c("hour", "day", "month", "year", "count", "edge_id"))
+dim(RaeBurnPlace)
+unique(RaeBurnPlace$year)
+
+###WhiteHouseLoan
+#get data from last section 
+WhiteHouseLoan <- read.csv("37whitehouseloan.csv", sep=',', header=T)
+#format into POSlt
+WhiteHouseLoan$date <- format(lubridate::dmy(WhiteHouseLoan$date),"%d/%m/%Y")
+#set time
+WhiteHouseLoan$date <- strptime(WhiteHouseLoan$date, format = "%d/%m/%Y", tz = "GMT")
+#year vec
+WhiteHouseLoan$year <- year(as.POSIXlt(WhiteHouseLoan$date, format="%d/%m/%Y"))
+#month vector 
+WhiteHouseLoan$month <- month(as.POSIXlt(WhiteHouseLoan$date, format="%d/%m/%Y"))
+# day vector 
+WhiteHouseLoan$day <- yday(as.POSIXlt(WhiteHouseLoan$date, format = "%d/%m/%Y", tz = "GMT"))
+#rename time to hour 
+colnames(WhiteHouseLoan)[colnames(WhiteHouseLoan) == 'time'] <- 'hour'
+#add total count
+WhiteHouseLoan$count <- WhiteHouseLoan$channel_1 + WhiteHouseLoan$channel_2
+#create edge ID
+WhiteHouseLoan$edge_id <- rep("761548", nrow(WhiteHouseLoan))
+#check data
+WhiteHouseLoan <- subset(WhiteHouseLoan, year == 2015)
+unique(WhiteHouseLoan$day)
+plot(WhiteHouseLoan$day, WhiteHouseLoan$count, xlab = "day", ylab= "count")
+abline(v=200, col="purple")
+abline(v=220, col="purple")
+abline(v=284, col="purple")
+abline(v=290, col="purple")
+title("WhiteHouseLoan")
+dim(WhiteHouseLoan)
+WhiteHouseLoan <- subset(WhiteHouseLoan, select = c("hour", "day", "month", "year", "count", "edge_id"))
+dim(WhiteHouseLoan)
+unique(WhiteHouseLoan$year)
+
+###MelvilleBusSouth
+#get data from last section 
+MelvilleBusSouth <- read.csv("44melvilledrivebus1southbound.csv", sep=',', header=T)
+#format into POSlt
+MelvilleBusSouth$date <- format(lubridate::dmy(MelvilleBusSouth$date),"%d/%m/%Y")
+#set time
+MelvilleBusSouth$date <- strptime(MelvilleBusSouth$date, format = "%d/%m/%Y", tz = "GMT")
+#year vec
+MelvilleBusSouth$year <- year(as.POSIXlt(MelvilleBusSouth$date, format="%d/%m/%Y"))
+#month vector 
+MelvilleBusSouth$month <- month(as.POSIXlt(MelvilleBusSouth$date, format="%d/%m/%Y"))
+# day vector 
+MelvilleBusSouth$day <- yday(as.POSIXlt(MelvilleBusSouth$date, format = "%d/%m/%Y", tz = "GMT"))
+#rename time to hour 
+colnames(MelvilleBusSouth)[colnames(MelvilleBusSouth) == 'time'] <- 'hour'
+#add total count
+MelvilleBusSouth$count <- MelvilleBusSouth$channel_1 + MelvilleBusSouth$channel_2
+#check data
+MelvilleBusSouth <- subset(MelvilleBusSouth, year == 2015)
+plot(MelvilleBusSouth$day, MelvilleBusSouth$count, xlab = "day", ylab= "count")
+abline(v=200, col="purple")
+abline(v=220, col="purple")
+abline(v=284, col="purple")
+abline(v=290, col="purple")
+title("MelvilleBusSouth")
+dim(MelvilleBusSouth)
+unique(MelvilleBusSouth$day)
+MelvilleBusSouth <- subset(MelvilleBusSouth, select = c("hour", "day", "month", "year", "count"))
+dim(MelvilleBusSouth)
+unique(MelvilleBusSouth$year)
+
+###MelvilleBusNorth
+#get data from last section 
+MelvilleBusNorth <- read.csv("45melvilledrivebus2northbound.csv", sep=',', header=T)
+#format into POSlt
+MelvilleBusNorth$date <- format(lubridate::dmy(MelvilleBusNorth$date),"%d/%m/%Y")
+#set time
+MelvilleBusNorth$date <- strptime(MelvilleBusNorth$date, format = "%d/%m/%Y", tz = "GMT")
+#year vec
+MelvilleBusNorth$year <- year(as.POSIXlt(MelvilleBusNorth$date, format="%d/%m/%Y"))
+#month vector 
+MelvilleBusNorth$month <- month(as.POSIXlt(MelvilleBusNorth$date, format="%d/%m/%Y"))
+# day vector 
+MelvilleBusNorth$day <- yday(as.POSIXlt(MelvilleBusNorth$date, format = "%d/%m/%Y", tz = "GMT"))
+#rename time to hour 
+colnames(MelvilleBusNorth)[colnames(MelvilleBusNorth) == 'time'] <- 'hour'
+#add total count
+MelvilleBusNorth$count <- MelvilleBusNorth$channel_1 + MelvilleBusNorth$channel_2
+#check data
+MelvilleBusNorth <- subset(MelvilleBusNorth, year == 2015)
+plot(MelvilleBusNorth$day, MelvilleBusNorth$count, xlab = "day", ylab= "count")
+abline(v=200, col="purple")
+abline(v=220, col="purple")
+abline(v=284, col="purple")
+abline(v=290, col="purple")
+title("MelvilleBusNorth")
+dim(MelvilleBusNorth)
+unique(MelvilleBusNorth$day)
+MelvilleBusNorth <- subset(MelvilleBusNorth, select = c("hour", "day", "month", "year", "count"))
+dim(MelvilleBusNorth)
+unique(MelvilleBusNorth$year)
+
+###FishwayCauseway
+#get data from last section 
+FishwayCauseway <- read.csv("46fishwivescauseway.csv", sep=',', header=T)
+#format into POSlt
+FishwayCauseway$date <- format(lubridate::dmy(FishwayCauseway$date),"%d/%m/%Y")
+#set time
+FishwayCauseway$date <- strptime(FishwayCauseway$date, format = "%d/%m/%Y", tz = "GMT")
+#year vec
+FishwayCauseway$year <- year(as.POSIXlt(FishwayCauseway$date, format="%d/%m/%Y"))
+#month vector 
+FishwayCauseway$month <- month(as.POSIXlt(FishwayCauseway$date, format="%d/%m/%Y"))
+# day vector 
+FishwayCauseway$day <- yday(as.POSIXlt(FishwayCauseway$date, format = "%d/%m/%Y", tz = "GMT"))
+#rename time to hour 
+colnames(FishwayCauseway)[colnames(FishwayCauseway) == 'time'] <- 'hour'
+#add total count
+FishwayCauseway$count <- FishwayCauseway$channel_1 + FishwayCauseway$channel_2
+#create edge ID
+FishwayCauseway$edge_id <- rep("139194", nrow(FishwayCauseway))
+#check data
+FishwayCauseway <- subset(FishwayCauseway, year == 2015)
+plot(FishwayCauseway$day, FishwayCauseway$count, xlab = "day", ylab= "count")
+abline(v=200, col="purple")
+abline(v=220, col="purple")
+abline(v=284, col="purple")
+abline(v=290, col="purple")
+title("FishwayCauseway")
+dim(FishwayCauseway)
+unique(FishwayCauseway$day)
+FishwayCauseway <- subset(FishwayCauseway, select = c("hour", "day", "month", "year", "count", "edge_id"))
+dim(FishwayCauseway)
+unique(FishwayCauseway$year)
+
+###CrewRoadSouth
+#get data from last section 
+CrewRoadSouth <- read.csv("48creweroadsouth.csv", sep=',', header=T)
+#format into POSlt
+CrewRoadSouth$date <- format(lubridate::dmy(CrewRoadSouth$date),"%d/%m/%Y")
+#set time
+CrewRoadSouth$date <- strptime(CrewRoadSouth$date, format = "%d/%m/%Y", tz = "GMT")
+#year vec
+CrewRoadSouth$year <- year(as.POSIXlt(CrewRoadSouth$date, format="%d/%m/%Y"))
+#month vector 
+CrewRoadSouth$month <- month(as.POSIXlt(CrewRoadSouth$date, format="%d/%m/%Y"))
+# day vector 
+CrewRoadSouth$day <- yday(as.POSIXlt(CrewRoadSouth$date, format = "%d/%m/%Y", tz = "GMT"))
+#rename time to hour 
+colnames(CrewRoadSouth)[colnames(CrewRoadSouth) == 'time'] <- 'hour'
+#add total count
+CrewRoadSouth$count <- CrewRoadSouth$channel_1 + CrewRoadSouth$channel_2
+#create edge ID
+CrewRoadSouth$edge_id <- rep("2232", nrow(CrewRoadSouth))
+#check data
+CrewRoadSouth <- subset(CrewRoadSouth, year == 2015)
+unique(CrewRoadSouth$day)
+plot(CrewRoadSouth$day, CrewRoadSouth$count, xlab = "day", ylab= "count")
+abline(v=186, col="purple")
+abline(v=192, col="purple")
+abline(v=200, col="purple")
+abline(v=220, col="purple")
+abline(v=284, col="purple")
+abline(v=290, col="purple")
+title("CrewRoadSouth")
+dim(CrewRoadSouth)
+CrewRoadSouth <- subset(CrewRoadSouth, select = c("hour", "day", "month", "year", "count", "edge_id"))
+dim(CrewRoadSouth)
+unique(CrewRoadSouth$year)
+
+#get matching days 
+
+uniquedayz <- c(95:164, 172:185, 193:199, 221:283, 291:303, 305:311, 319:365)
+
+#StenhouseDrive 
+#CorstorphineRoad 
+#DalryRoad 
+#DundeeStreet 
+#InverleithRow 
+#LondonRoad 
+#Nicolson 
+#QueensFerryRoad 
+#RaeBurnPlace 
+#WhiteHouseLoan 
+#MelvilleBusSouth 
+#MelvilleBusNorth 
+#FishwayCauseway 
+#CrewRoadSouth  
+
+#Merge two melville bus because two counters at some place 
+MelvilleBus <- aggregate(count ~ year + month + day + hour, data = rbind(MelvilleBusSouth, MelvilleBusNorth), FUN = sum)
+MelvilleBus$edge_id <- rep("431207", nrow(MelvilleBus))
+
+#connect all others with main 
+trips_connected <- plyr:::rbind.fill(StenhouseDrive, CorstorphineRoad, DalryRoad, FishwayCauseway,
+                                     DundeeStreet, InverleithRow, LondonRoad, Nicolson, 
+                                     QueensFerryRoad, RaeBurnPlace, WhiteHouseLoan, CrewRoadSouth)
+Bike_Counts <- subset(trips_connected, select =c(year, month, day, hour, count, edge_id))
+
+
+MelvilleBus_Study <- subset(MelvilleBus, year == 2015)
+Bike_Counts_Study <- subset(Bike_Counts, year == 2015)
+
+
+bike_counts <- rbind(MelvilleBus_Study, Bike_Counts_Study)
+
+setwd("D:\\Documents 2\\Strava Scotland\\Strava_2015_recon\\Edinburgh_edges")
+write.csv(bike_counts, "bike_sensor_counts.csv")

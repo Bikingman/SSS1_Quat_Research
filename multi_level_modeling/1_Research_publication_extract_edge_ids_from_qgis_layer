@@ -1,0 +1,15 @@
+
+#R 
+
+#note edinburgh edges were clipped from scotland's edges using clip tool in QGIS
+#first extract the edge ids from the edinburgh file, copy the edge ids onto clipboard
+#then use that snip in SQL to extract edges from main dataset 
+
+library(foreign)
+setwd("D:\\Documents 2\\Strava Scotland\\Strava_2015_recon\\Edinburgh_edges")
+edi_city_center <- read.dbf("edi_edges_wo_PHandA_BNG.dbf") # this is a shapefile created in QGIS with all wards except wards 1 (almond) and 2 (pentland hill)
+CCID2015<-subset(edi_city_center, select=c(ID))
+nn <- paste(as.character(unique(edi_city_center$ID)), collapse=", ")
+writeClipboard(nn) # copy all edge IDs and taken to MySQL
+ 
+#use "nn" in MYSQL to extract from metro minute

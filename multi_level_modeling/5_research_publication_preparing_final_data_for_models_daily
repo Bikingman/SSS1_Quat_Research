@@ -1,0 +1,77 @@
+##Aggregate to daily level
+
+#get strava data, the csv includes all strava counts within City of Edinburgh, extracted from Metro minute dataset
+setwd("D:\\Documents 2\\Strava Scotland\\Strava_2015_recon\\Edinburgh_edges")
+connect2015 <- read.csv("stravaexpanded2015_to_full_year.csv", sep = ',', header = T)
+
+#aggregate data to daily level
+dailycounts <- aggregate(cbind(tot_act_count, commute) ~ edge_id + year + day, data=connect2015, FUN = sum)
+fday <- subset(dailycounts, select = c(edge_id, day, tot_act_count, commute))
+
+#import weather data, weather was aggregated separately
+setwd("D:\\Urban Transport MSc\\Mapping Ridership in Edinburgh Paper\\weather data")
+weather <- read.csv("Edinburgh hourly weather1.csv", sep=',', header = T)
+dim(weather)
+
+#import bike index data
+setwd("D:\\Documents 2\\Strava Scotland\\Strava_2015_recon\\Edinburgh_edges")
+bike_index <- read.csv("bike_index.csv", sep=',', header = T)
+
+#merge strava data with weather data 
+dataday <- merge(fday, weather, by = c("day"))
+
+#connect bike index with correct columns 
+bike_index = bike_index[c(2:4)]
+data1day <- merge(dataday, bike_index, by.x = "edge_id", by.y = "ID", all.x = TRUE, all.y = TRUE)
+
+#generate recreational trips column  
+data1day$rec_counts <- data1day$tot_act_count - data1day$commute
+
+#check data
+head(data1day)
+
+#write data file
+setwd("D:\\Documents 2\\Strava Scotland\\Strava_2015_recon\\Edinburgh_edges")
+write.csv(data1day, "model_data_day.csv")
+
+
+
+#Aggregate to monthly level
+
+
+#aggregate data to monthly level
+#get strava data, the csv includes all strava counts within City of Edinburgh, extracted from Metro minute dataset
+setwd("D:\\Documents 2\\Strava Scotland\\Strava_2015_recon\\Edinburgh_edges")
+connect2015 <- read.csv("stravaexpanded2015_to_full_year.csv", sep = ',', header = T)
+
+#aggregate data to monthly level
+monthlycounts <- aggregate(cbind(tot_act_count, commute) ~ edge_id + year + month, data=connect2015, FUN = sum)
+
+fmonthly <- subset(monthlycounts, select = c(edge_id, month, tot_act_count, commute))
+
+#import weather data  
+setwd("D:\\Urban Transport MSc\\Mapping Ridership in Edinburgh Paper\\weather data")
+weather <- read.csv("Edinburgh month weather1.csv", sep=',', header = T)
+dim(weather)
+
+#merge strava data with weather data 
+datamonthly <- merge(fmonthly, weather, by = c("month"))
+
+#connect bike index with correct columns 
+bike_index = subset(bike_index, select = c("ID", "bike_index"))
+data1monthly <- merge(datamonthly, bike_index, by.x = "edge_id", by.y = "ID", all.x = T, all.y = T)
+
+#NA need to be recoded to 0
+data1monthly$commute[is.na(data1monthly$commute)] <- 0 
+data1monthly$tot_act_count[is.na(data1monthly$tot_act_count)] <- 0 
+
+#generate recreational trips column  
+data1monthly$rec_counts <- data1monthly$tot_act_count - data1monthly$commute
+
+#check data
+head(data1monthly)
+
+#write data file
+setwd("C:\\Users\\Daniel I. Patterson\\Desktop\\Bikeability Paper\\Strava")
+write.csv(data1monthly, "month_level_Strava_data.csv")
+
